@@ -89,10 +89,22 @@ def run_test_problem3a():
 
     # Test 4 (it is on window 3):
     point = rg.Point(30, 30)
+    expected = 88
+    answer = problem3a(window3, point, 10)
+    print()
+    print('Test 4 expected:', expected)
+    print('       actual:  ', answer)
+
+    # Window 3:
+    title = 'Problem 3a. Test 5: Start at (10, 15), 10 lines'
+    window3 = rg.RoseWindow(450, 300, title)
+
+    # Test 4 (it is on window 3):
+    point = rg.Point(10, 15)
     expected = 218
     answer = problem3a(window3, point, 20)
     print()
-    print('Test 4 expected:', expected)
+    print('Test 5 expected:', expected)
     print('       actual:  ', answer)
 
     window3.close_on_mouse_click()
@@ -145,7 +157,29 @@ def problem3a(window, point, n):
     #    DIFFICULTY:      7 or 8
     #    TIME ESTIMATE:   20 to 35 minutes.
     # ------------------------------------------------------------------
+    thickness = 0
+    total = 0
+    for k in range(n):
+        if k != 0:
+            point.x = point.x + 20
+            point.y = point.y + 10
+        new_x = point.x
+        new_y = point.y + 50
+        line = rg.Line(rg.Point(point.x, point.y), rg.Point(new_x, new_y))
+        if thickness == 0:
+            thickness = 1
+            total += 1
+        elif thickness < 13:
+            thickness = thickness + 2
+            total += thickness
+        else:
+            thickness = 13
+            total += thickness
 
+        line.thickness = thickness
+        line.attach_to(window)
+    window.render()
+    return(total)
 
 def run_test_problem3b():
     """ Tests the   problem3b   function. """
@@ -214,6 +248,23 @@ def problem3b(m, point1):
     #    DIFFICULTY:      8 or 9
     #    TIME ESTIMATE:   20 to 30 minutes.
     # ------------------------------------------------------------------
+
+    window = rg.RoseWindow(400, 650)
+    for k in range(m):
+        problem3a(window, point1, m)
+        startingandendingpointx = point1.x
+        if k > 0:
+            startingpointy = point1.y + 30
+            endingpointy = point1.y - (30 * k)
+            line = rg.Line(rg.Point(startingandendingpointx, startingpointy), rg.Point(startingandendingpointx, endingpointy))
+            line.attach_to(window)
+
+    window.render()
+    window.close_on_mouse_click()
+
+
+
+
 
 # ----------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
